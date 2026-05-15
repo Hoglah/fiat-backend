@@ -10,9 +10,9 @@ import { v2 as cloudinary } from "cloudinary";
 
 // Cloudinary config
 cloudinary.config({
-  cloud_name: "dnzlelxmy",
-  api_key: "294369235874889",
-  api_secret: "Dc9tJP5COPNF_fL5TKPOIT3cjbY",
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 // Multer storage engine for Cloudinary
