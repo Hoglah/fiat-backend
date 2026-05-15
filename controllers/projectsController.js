@@ -1,4 +1,4 @@
-import projectsModel from "../models/projectsModel.js";
+import projectsModel from "../models/projectsModels.js";
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
 
