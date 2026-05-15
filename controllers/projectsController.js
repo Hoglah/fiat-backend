@@ -1,15 +1,33 @@
-import projectsModel from "../models/projectsModels.js";
+import projectsModel from "../models/projectsModel.js";
 import { v2 as cloudinary } from "cloudinary";
+import fs from "fs";
+
+// Cloudinary config (use env vars in Render dashboard)
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 // Add project item
 const addProjects = async (req, res) => {
   try {
+    // Upload to Cloudinary
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: "projects",
+    });
+
+    // Save to MongoDB
     const project = new projectsModel({
       title: req.body.title,
-      img: req.file.path, // Cloudinary gives a URL here
+      img: result.secure_url, // Cloudinary URL
     });
 
     await project.save();
+
+    // Remove temp file
+    fs.unlinkSync(req.file.path);
+
     res.json({ success: true, message: "Project Added" });
   } catch (error) {
     console.error(error);
